@@ -1,0 +1,2 @@
+pyfiglet==1.0.2
+renpy==0.9.7
