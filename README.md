@@ -1,6 +1,6 @@
-## english_Project
+# english_Project
 
-# Installation :
+## Installation :
 
 **Environnement virtuel**
 Créer environnement :
