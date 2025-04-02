@@ -189,6 +189,8 @@ class Suspect:
     def __str__(self):
         return f"{self.first_name} {self.last_name} (Alibi: {self.alibi}, Motive: {self.motive})"
 
+    def getName(self):
+        return f"{self.first_name} {self.last_name}"
 
 class SuspectManager:
     def __init__(self):

@@ -51,15 +51,16 @@ label start:
     boss "Also your name is still [persistent.player_name]"
 
     jump guess_culprit
-    "Game will exit NOW"
 
-    # This ends the game.
+    # This code is not executed
+    "Game will exit NOW"
     return
 
 label guess_culprit:
 
-    show office with fade
-    show boss
+    scene office
+    show boss serious
+    with fade
 
     boss "So, [persistent.player_name], you think you have enough data to 
     try and guess who commited the crime?"
@@ -71,8 +72,10 @@ label guess_culprit:
     
     python:
         for suspect in suspects:
-            renpy.say(boss, suspect.name)
+            renpy.say(boss, suspect.getName()+"?")
         #textbutton str(suspect) action [SetVariable("chosen_suspect", str(suspect))] xalign 0.5 yalign 0.5
 
-    boss "hello?"
+    boss "J'arrive pas à faire des boutons avec leurs noms :("
+    boss "adios"
+
     return
