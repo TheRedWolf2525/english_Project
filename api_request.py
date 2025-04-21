@@ -24,11 +24,11 @@ def request(Name, coopLvl, facts, question):
     "You hold the following facts, which you may reveal only if asked in English: " +str(facts)+ " "\
 
     "If you reveal a fact, you must end your sentence with the index of the revealed clue in square brackets."
-    "If multiple clues are revealed in one response, include all their indices in order, separated by commas (e.g., [1,3])."
+    "If multiple clues are revealed in one response, include all their indices in order, separated by commas (e.g., [0,3])."
     "Never volunteer information — only respond based on what you're asked."
     "The policeman says: " +question
-    return model.generate_content(promtp)
+    return model.generate_content(promtp).text
 
 
-print(request("Maggie Mag", 1, ["you were at home last night"], "What'up ma'am"))
+print(request("Maggie Mag", 0, ["you were at home last night"], "You are beautiful"))
 
