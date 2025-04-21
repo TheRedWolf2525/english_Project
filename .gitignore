@@ -1,3 +1,13 @@
 /env
 .vscode
 API_KEY.txt
+errors.txt
+log.txt
+traceback.txt
+game/*.rpyc
+game/*.rpyb
+game/cache/
+game/gui/saves/
+game/saves/*
+game/saves/navigation.json
+game/saves/persistent
