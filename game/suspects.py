@@ -1,25 +1,33 @@
 import random
+# Assign genders and split first names accordingly
+GENDERS = ["Male", "Female"]
 
-# Listes de caractéristiques des suspects
-FIRST_NAMES = [
-    "Alice",
+MALE_FIRST_NAMES = [
     "Bob",
     "Charlie",
-    "Diana",
-    "Eve",
     "Frank",
-    "Grace",
     "Hank",
-    "Ivy",
     "Jack",
-    "Karen",
     "Leo",
     "Mike",
     "Nate",
+    "Ben"
+]
+
+FEMALE_FIRST_NAMES = [
+    "Alice",
+    "Diana",
+    "Eve",
+    "Grace",
+    "Ivy",
+    "Karen",
     "Olivia",
 ]
+
 LAST_NAMES = [
     "Smith",
+    "Dover",
+    "Hawk",
     "Johnson",
     "Brown",
     "Williams",
@@ -163,6 +171,7 @@ class Suspect:
         sleep_cycle,
         alibi,
         motive,
+        picture_label,
     ):
         self.first_name = first_name
         self.last_name = last_name
@@ -185,6 +194,7 @@ class Suspect:
         self.sleep_cycle = sleep_cycle
         self.alibi = alibi
         self.motive = motive
+        self.picture_label = picture_label
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} (Alibi: {self.alibi}, Motive: {self.motive})"
@@ -192,15 +202,49 @@ class Suspect:
     def getName(self):
         return f"{self.first_name} {self.last_name}"
 
+    def getPicture(self, expression):
+        return f"{self.picture_label} {expression}"
+
 class SuspectManager:
     def __init__(self):
         self.suspects = []
 
     def generate_suspects(self, count=5):
+        used_first_names = set()
+        used_last_names = set()
+
+        girls_count = 1
+        boys_count = 1
+
         for _ in range(count):
+            gender = random.choice(GENDERS)
+            if gender == "Male":
+                first_name = random.choice(MALE_FIRST_NAMES)
+            else:
+                first_name = random.choice(FEMALE_FIRST_NAMES)
+            # WARNING: Infinte loop if not enough names
+            while first_name in used_first_names:
+                if gender == "Male":
+                    first_name = random.choice(MALE_FIRST_NAMES)
+                else:
+                    first_name = random.choice(FEMALE_FIRST_NAMES)
+            used_first_names.add(first_name)
+
+            last_name = random.choice(LAST_NAMES)
+            while last_name in used_last_names:
+                last_name = random.choice(LAST_NAMES)
+            used_last_names.add(last_name)
+
+            if gender == "Male":
+                picture_label = "male " + str(boys_count)
+                boys_count += 1
+            elif gender == "Female":
+                picture_label = "female " + str(girls_count)
+                girls_count += 1
+
             suspect = Suspect(
-                first_name=random.choice(FIRST_NAMES),
-                last_name=random.choice(LAST_NAMES),
+                first_name=first_name,
+                last_name=last_name,
                 age=random.choice(AGES),
                 year=random.choice(YEARS),
                 specialization=random.choice(SPECIALIZATIONS),
@@ -220,6 +264,7 @@ class SuspectManager:
                 sleep_cycle=random.choice(SLEEP_CYCLES),
                 alibi=random.choice(ALIBIS),
                 motive=random.choice(MOTIVES),
+                picture_label=picture_label,
             )
             self.suspects.append(suspect)
 

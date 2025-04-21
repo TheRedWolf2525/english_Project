@@ -34,19 +34,22 @@ label start:
     scene bg office
     show boss serious
 
-    boss "Hello, [persistent.player_name]."
+    boss "Hello, Agent [persistent.player_name]."
     boss "There was a murder in a school. That will be your first case to solve."
     boss "Are you ready?"
 
-    scene bg tn outside 1 
-    show boss happy
+    scene bg police 1 
+    show boss serious
     with fade
 
-    boss "We finally arrived on premises. There are suspects. They are:"
+    boss "We managed to capture all [number_of_suspects] suspects. Here they are:"
+    show boss serious at left
 
     python:
         for suspect in persistent.suspect_manager.get_suspects():
+            renpy.show(suspect.getPicture("sad"), at_list=[Position(xalign=0.5, yalign=1.0)])
             renpy.say(boss, str(suspect))
+            renpy.hide(suspect.getPicture("sad"))     
 
     boss "Also your name is still [persistent.player_name]"
 
