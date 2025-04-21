@@ -18,10 +18,16 @@ default persistent.suspect_manager = None
 init python:
     from suspects import SuspectManager
     persistent.suspect_manager = SuspectManager()
+    from request_util import request_from_gemini
 
 
 # The game starts here.
 label start:
+
+    while True:
+        $ question = renpy.input("Write here:") or ""
+        $ answer = request_from_gemini("Maggie Mag", 0, ["you were at home last night"], question)
+        "Maggie: [answer]"
 
     # logique métier à exécuter à chaque nouvelle partie
     $ persistent.suspect_manager.generate_suspects(number_of_suspects)
