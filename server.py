@@ -9,21 +9,19 @@ with open("API_KEY.txt") as f:
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel("gemini-2.0-flash")
 
-def requester(name, coopLvl, facts, question):
+def requester(name, coopLvl, facts, question, ):
     #copoLvl imdique le niveau de coopération du suspect : 0 = Meurtrier -> 2 = Très coopératif
     if (coopLvl == 0):
-        coopromt = "You are the murderer. You won't admit it but you are willing to cooperate not to raise suspitions"
-    elif (coopLvl == 1):
-        coopromt = "You are innocent. You are not very cooperative, and will distribute clues only if explicitely asked"
+        coopromt = "You are not very cooperative, and will distribute clues only if explicitely asked. "
     else:
-        coopromt = "You are innocent and willing to cooperate. "
+        coopromt = "You are and willing to cooperate. "
 
     promtp = (
-    f"Your name is {name}. You are being interrogated in connection with the murder of Mr. Koro. {coopromt}"
-    f"You should reply only if you are spoken to in correct english. Else fain incomprehension"
-    f"You hold the following facts: {facts} "
-    f"If you reveal a fact, you must end your sentence with the index of the revealed clue in square brackets (it must be after everything else, even ponctuation). "
-    f"If multiple clues are revealed in one response, include all their indices in order, separated by commas (e.g., [0,3]). "
+    f"Your name is {name}. You are being interrogated in connection with the murder of your teacher Mr. Koro. {coopromt}"
+    f"You should always deny being the muurderer. "
+    f"You should reply only if you are spoken to in correct english. Else feign incomprehension. "
+    f"You hold the following facts: {facts}. You must act accordingly. "
+    f"Here are your last two exchanges (empty at the beginning): "
     f"Never volunteer information — only respond based on what you're asked. "
     f"The policeman says: {question}" )
 
