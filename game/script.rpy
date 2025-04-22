@@ -72,21 +72,44 @@ label start:
     return
 
 
-screen button_interrogate_suspect(Texte, x, y, suspect_id):
-    textbutton [Texte] action Call("interrogate_suspect", suspect_id) xalign x yalign y
 
 # Allows selection of the next person that will be interrogated.
 label choose_dialogue:
     scene bg police 2
-    show screen button_interrogate_suspect("Interrogate Suspect", 0.5, 0.5, 1)
     
-    "normalement y'a le bouton"
-    return
+    python:
+        for suspect_id in range(number_of_suspects):
+            suspect = persistent.suspect_manager.get_suspect_by_id(suspect_id)
+            renpy.show_screen("button_interrogate_suspect_" + str(suspect_id), suspect.getName(), 0.1 + 0.2*suspect_id, 0.5)
 
+    "Who do you want to interrogate next?"
+    while True:
+        pass
+
+
+screen button_interrogate_suspect_0(Texte, x, y):
+    textbutton [Texte] action Call("interrogate_suspect", 1) xalign x yalign y
+
+screen button_interrogate_suspect_1(Texte, x, y):
+    textbutton [Texte] action Call("interrogate_suspect", 2) xalign x yalign y
+
+screen button_interrogate_suspect_2(Texte, x, y):
+    textbutton [Texte] action Call("interrogate_suspect", 3) xalign x yalign y
+
+screen button_interrogate_suspect_3(Texte, x, y):
+    textbutton [Texte] action Call("interrogate_suspect", 4) xalign x yalign y
+
+screen button_interrogate_suspect_4(Texte, x, y):
+    textbutton [Texte] action Call("interrogate_suspect", 5) xalign x yalign y
 
 
 label interrogate_suspect(suspect_id):
-    hide screen button_interrogate_suspect
+    hide screen button_interrogate_suspect_0
+    hide screen button_interrogate_suspect_1
+    hide screen button_interrogate_suspect_2
+    hide screen button_interrogate_suspect_3
+    hide screen button_interrogate_suspect_4
+    
     "ID : [suspect_id]"
     ## faut poser la question au bon suspect
     while True:
