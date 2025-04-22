@@ -180,6 +180,7 @@ screen button_return_to_choose_dialogue:
         xalign 0.9 yalign 0.1
         textbutton "Return to choose dialogue" action Jump("choose_dialogue")
 
+
 label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_0
     hide screen button_interrogate_suspect_1
@@ -288,5 +289,8 @@ label guessed(suspect_id):
         else:
             renpy.say(boss, "You guessed it wrong!")
             renpy.say(boss, "The killer was [persistent.suspect_manager.get_suspect_by_id(persistent.killer_id).getName()]")
-
+        
+        "Thanks for playing!"
+        "The game will now exit."
+        renpy.full_restart()
     return
