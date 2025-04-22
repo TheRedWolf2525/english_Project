@@ -352,7 +352,10 @@ screen main_menu():
     ## This ensures that any other menu screen is replaced.
     tag menu
 
-    add gui.main_menu_background
+    window:
+        style "mm_root"
+
+        add "images/menu.png"  # ← ton image d’accueil ici
 
     ## This empty frame darkens the main menu.
     frame:
