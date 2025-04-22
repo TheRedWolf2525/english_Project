@@ -15,6 +15,7 @@ define number_of_suspects = 5
 default persistent.player_name = None
 default persistent.suspect_manager = None
 default persistent.killer_id = None
+default persistent.clues = None
 
 init python:
     from suspects import SuspectManager
@@ -27,12 +28,12 @@ label start:
 
     # logique métier à exécuter à chaque nouvelle partie
     $ persistent.killer_id = persistent.suspect_manager.generate_valid_suspects()
-    #$ persistent.suspect_manager.generate_suspects(number_of_suspects)
-    #"[persistent.suspect_manager.get_suspect_by_id(persistent.killer_id)]"
+    $ persistent.clues = persistent.suspect_manager.find_unique_signature_combination(persistent.killer_id)
+            
 
     # Text 
     "Welcome to the game."
-    $ persistent.player_name = renpy.input("Please enter your name:") or "Player"
+    $ persistent.player_name = renpy.input("Please enter your name:") or "Lestrade"
 
     # affiche
     scene bg office
@@ -43,12 +44,23 @@ label start:
 
     # show image du mort
 
+    
+
     boss "That will be your first case to solve."
     boss "Are you ready?"
 
     scene bg police 1 
     show boss serious
     with fade
+
+    boss "We just recived a list of clues from the crime scene."
+    boss "Sadly, as always, it seems that writing a good report is too much to ask..."
+    boss "Here is all I've got :"
+
+    python:
+        for key in persistent.clues:
+            val = persistent.suspect_manager.get_suspect_by_id(persistent.killer_id).get_attributes()[key]
+            renpy.say(boss, key+" : "+str(val))
 
     boss "We managed to capture all [number_of_suspects] suspects. Here they are:"
     show boss serious at left
@@ -71,7 +83,18 @@ label start:
 
     return
 
+label give_hints:
+    boss "We just recived a list of clues from the crime scene."
+    boss "Sadly, as always, it seems that writing a good report is too much to ask..."
+    boss "Here is all I've got :"
 
+    python:
+        for key in persistent.clues:
+            val = persistent.suspect_manager.get_suspect_by_id(persistent.killer_id).get_attributes()[key]
+            renpy.say(boss, key+" : "+str(val))
+    
+    boss "Now it's your turn"
+    jump choose_dialogue
 
 # Allows selection of the next person that will be interrogated.
 label choose_dialogue:
@@ -115,7 +138,6 @@ label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_4
     hide screen button_guess_culprit
     
-    "ID : [suspect_id]"
     ## faut poser la question au bon suspect
     while True:
         $ question = renpy.input("Write here:") or ""
