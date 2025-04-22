@@ -83,29 +83,60 @@ label choose_dialogue:
             renpy.show_screen("button_interrogate_suspect_" + str(suspect_id), suspect.getName(), 0.1 + 0.2*suspect_id, 0.5)
 
     show screen button_guess_culprit
+    show screen button_ask_hints
     
     "Who do you want to interrogate next?"
     
 
 
 screen button_interrogate_suspect_0(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 0) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("interrogate_suspect", 0)
 
 screen button_interrogate_suspect_1(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 1) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("interrogate_suspect", 1)
 
 screen button_interrogate_suspect_2(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 2) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("interrogate_suspect", 2)
 
 screen button_interrogate_suspect_3(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 3) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("interrogate_suspect", 3)
 
 screen button_interrogate_suspect_4(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 4) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("interrogate_suspect", 4)
 
 screen button_guess_culprit:
-    textbutton "Guess the culprit" action Jump("guess_culprit") xalign 0.5 yalign 0.7
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign 0.3 yalign 0.7
+        textbutton "Guess the culprit" action Jump("guess_culprit")
 
+screen button_ask_hints:
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign 0.7 yalign 0.7
+        textbutton "Ask for hints" action Jump("give_hints")
 
 label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_0
@@ -114,6 +145,7 @@ label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_3
     hide screen button_interrogate_suspect_4
     hide screen button_guess_culprit
+    hide screen button_ask_hints
     
     "ID : [suspect_id]"
     ## faut poser la question au bon suspect
@@ -126,19 +158,39 @@ label interrogate_suspect(suspect_id):
 
 
 screen button_guess_suspect_0(Texte, x, y):
-    textbutton [Texte] action Call("guessed", 0) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("guessed", 0)
 
 screen button_guess_suspect_1(Texte, x, y):
-    textbutton [Texte] action Call("guessed", 1) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("guessed", 1)
 
 screen button_guess_suspect_2(Texte, x, y):
-    textbutton [Texte] action Call("guessed", 2) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("guessed", 2)
 
 screen button_guess_suspect_3(Texte, x, y):
-    textbutton [Texte] action Call("guessed", 3) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("guessed", 3)
 
 screen button_guess_suspect_4(Texte, x, y):
-    textbutton [Texte] action Call("guessed", 4) xalign x yalign y
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign x yalign y
+        textbutton [Texte] action Call("guessed", 4)
 
 
 # scene where the player tries to guess the culprit
@@ -150,6 +202,8 @@ label guess_culprit:
     hide screen button_interrogate_suspect_3
     hide screen button_interrogate_suspect_4
     hide screen button_guess_culprit
+    hide screen button_ask_hints
+
 
     scene office
     show boss serious
@@ -179,10 +233,14 @@ label guessed(suspect_id):
     hide screen button_guess_suspect_3
     hide screen button_guess_suspect_4
 
+    "You guessed [persistent.suspect_manager.get_suspect_by_id(suspect_id).getName()]?"
+    "You are sure? Let's see..."
+
     python:
         if suspect_id == persistent.killer_id:
-            "You guessed it right!"
+            renpy.say(boss, "You guessed it right!")
         else:
-            "You guessed it wrong!"
+            renpy.say(boss, "You guessed it wrong!")
+            renpy.say(boss, "The killer was [persistent.suspect_manager.get_suspect_by_id(persistent.killer_id).getName()]")
 
     return
