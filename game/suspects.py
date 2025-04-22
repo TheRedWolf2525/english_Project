@@ -280,3 +280,9 @@ class SuspectManager:
 
     def get_suspects(self):
         return self.suspects
+    
+    def get_suspect_by_id(self, id):
+        for suspect in self.suspects:
+            if suspect.id == id:
+                return suspect
+        return None
