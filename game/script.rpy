@@ -82,9 +82,10 @@ label choose_dialogue:
             suspect = persistent.suspect_manager.get_suspect_by_id(suspect_id)
             renpy.show_screen("button_interrogate_suspect_" + str(suspect_id), suspect.getName(), 0.1 + 0.2*suspect_id, 0.5)
 
+    show screen button_guess_culprit
+    
     "Who do you want to interrogate next?"
-    while True:
-        pass
+    
 
 
 screen button_interrogate_suspect_0(Texte, x, y):
@@ -102,6 +103,9 @@ screen button_interrogate_suspect_3(Texte, x, y):
 screen button_interrogate_suspect_4(Texte, x, y):
     textbutton [Texte] action Call("interrogate_suspect", 5) xalign x yalign y
 
+screen button_guess_culprit:
+    textbutton "Guess the culprit" action Jump("guess_culprit") xalign 0.5 yalign 0.7
+
 
 label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_0
@@ -109,6 +113,7 @@ label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_2
     hide screen button_interrogate_suspect_3
     hide screen button_interrogate_suspect_4
+    hide screen button_guess_culprit
     
     "ID : [suspect_id]"
     ## faut poser la question au bon suspect
@@ -121,6 +126,13 @@ label interrogate_suspect(suspect_id):
 
 
 label guess_culprit:
+
+    hide screen button_interrogate_suspect_0
+    hide screen button_interrogate_suspect_1
+    hide screen button_interrogate_suspect_2
+    hide screen button_interrogate_suspect_3
+    hide screen button_interrogate_suspect_4
+    hide screen button_guess_culprit
 
     scene office
     show boss serious
