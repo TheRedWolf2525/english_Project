@@ -168,6 +168,10 @@ class Suspect:
             "frequent_location": self.frequent_location,
             "alibi": self.alibi,
         }
+    
+    def get_full_profiles(self):
+        return [self.get_attributes()]
+
 
 
 class SuspectManager:
@@ -277,4 +281,23 @@ class SuspectManager:
             attempts += 1
 
         raise Exception("Impossible de générer des suspects valides après plusieurs tentatives.")
+    
+    def find_unique_signature_combination(self, murderer_id, indices_count=6):
+
+        murderer = self.get_suspect_by_id(murderer_id)
+        murderer_attrs = murderer.get_attributes()
+        keys = list(murderer_attrs.keys())
+
+        for combo in combinations(keys, indices_count):
+            murderer_signature = tuple(murderer_attrs[k] for k in combo)
+
+            match_count = sum(
+                1 for suspect in self.suspects
+                if tuple(suspect.get_attributes()[k] for k in combo) == murderer_signature
+            )
+            if match_count == 1:
+                return list(combo)  # Signature unique trouvée
+
+        return None  # Aucun combo unique trouvé
+
 
