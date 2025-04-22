@@ -55,9 +55,9 @@ label start:
 
     python:
         for suspect in persistent.suspect_manager.get_suspects():
-            renpy.show(suspect.getPicture("sad"), at_list=[Position(xalign=0.5, yalign=1.0)])
+            renpy.show(suspect.getPicture("normal"), at_list=[Position(xalign=0.5, yalign=1.0)])
             renpy.say(boss, str(suspect))
-            renpy.hide(suspect.getPicture("sad"))     
+            renpy.hide(suspect.getPicture("normal"))     
 
     show boss serious at center 
     boss "You have to find out who killed Mr Koro."
