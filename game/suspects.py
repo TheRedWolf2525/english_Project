@@ -150,6 +150,7 @@ MOTIVES = [
 class Suspect:
     def __init__(
         self,
+        id,
         first_name,
         last_name,
         age,
@@ -173,6 +174,7 @@ class Suspect:
         motive,
         picture_label,
     ):
+        self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
@@ -222,7 +224,7 @@ class SuspectManager:
         girls_count = 1
         boys_count = 1
 
-        for _ in range(count):
+        for id in range(count):
             gender = random.choice(GENDERS)
             if gender == "Male":
                 first_name = random.choice(MALE_FIRST_NAMES)
@@ -249,6 +251,7 @@ class SuspectManager:
                 girls_count += 1
 
             suspect = Suspect(
+                id=id,
                 first_name=first_name,
                 last_name=last_name,
                 age=random.choice(AGES),
@@ -271,6 +274,7 @@ class SuspectManager:
                 alibi=random.choice(ALIBIS),
                 motive=random.choice(MOTIVES),
                 picture_label=picture_label,
+            
             )
             self.suspects.append(suspect)
 

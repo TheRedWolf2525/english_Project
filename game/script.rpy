@@ -24,11 +24,6 @@ init python:
 # The game starts here.
 label start:
 
-    while True:
-        $ question = renpy.input("Write here:") or ""
-        $ answer = request_from_gemini("Maggie Mag", 0, ["you were at home last night"], question)
-        "Maggie: [answer]"
-
     # logique métier à exécuter à chaque nouvelle partie
     $ persistent.suspect_manager.generate_suspects(number_of_suspects)
 
@@ -41,7 +36,11 @@ label start:
     show boss serious
 
     boss "Hello, Agent [persistent.player_name]."
-    boss "There was a murder in a school. That will be your first case to solve."
+    boss "There was a murder in a school. Mr Koro, a teacher that worked there, was found dead."
+
+    # show image du mort
+
+    boss "That will be your first case to solve."
     boss "Are you ready?"
 
     scene bg police 1 
@@ -57,13 +56,41 @@ label start:
             renpy.say(boss, str(suspect))
             renpy.hide(suspect.getPicture("sad"))     
 
-    boss "Also your name is still [persistent.player_name]"
+    show boss serious at center 
+    boss "You have to find out who killed Mr Koro."
 
-    jump guess_culprit
+    jump choose_dialogue
+    
+    # jump guess_culprit
 
     # This code is not executed
     "Game will exit NOW"
+
     return
+
+
+screen button_interrogate_suspect(Texte, x, y, suspect_id):
+    textbutton [Texte] action Call("interrogate_suspect", suspect_id) xalign x yalign y
+
+# Allows selection of the next person that will be interrogated.
+label choose_dialogue:
+    scene bg police 2
+    show screen button_interrogate_suspect("Interrogate Suspect", 0.5, 0.5, 1)
+    
+    "normalement y'a le bouton"
+    return
+
+
+
+label interrogate_suspect(suspect_id):
+    hide screen button_interrogate_suspect
+    "ID : [suspect_id]"
+    ## faut poser la question au bon suspect
+    while True:
+        $ question = renpy.input("Write here:") or ""
+        $ answer = request_from_gemini("Maggie Mag", 0, ["you were at home last night"], question)
+        "Maggie: [answer]"
+
 
 label guess_culprit:
 
