@@ -81,26 +81,26 @@ label choose_dialogue:
         for suspect_id in range(number_of_suspects):
             suspect = persistent.suspect_manager.get_suspect_by_id(suspect_id)
             renpy.show_screen("button_interrogate_suspect_" + str(suspect_id), suspect.getName(), 0.1 + 0.2*suspect_id, 0.5)
-
+    
     "Who do you want to interrogate next?"
     while True:
         pass
 
 
 screen button_interrogate_suspect_0(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 1) xalign x yalign y
+    textbutton [Texte] action Call("interrogate_suspect", 0) xalign x yalign y
 
 screen button_interrogate_suspect_1(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 2) xalign x yalign y
+    textbutton [Texte] action Call("interrogate_suspect", 1) xalign x yalign y
 
 screen button_interrogate_suspect_2(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 3) xalign x yalign y
+    textbutton [Texte] action Call("interrogate_suspect", 2) xalign x yalign y
 
 screen button_interrogate_suspect_3(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 4) xalign x yalign y
+    textbutton [Texte] action Call("interrogate_suspect", 3) xalign x yalign y
 
 screen button_interrogate_suspect_4(Texte, x, y):
-    textbutton [Texte] action Call("interrogate_suspect", 5) xalign x yalign y
+    textbutton [Texte] action Call("interrogate_suspect", 4) xalign x yalign y
 
 
 label interrogate_suspect(suspect_id):
@@ -120,6 +120,23 @@ label interrogate_suspect(suspect_id):
         "Maggie: [answer]"
 
 
+screen button_guess_suspect_0(Texte, x, y):
+    textbutton [Texte] action Call("guessed", 0) xalign x yalign y
+
+screen button_guess_suspect_1(Texte, x, y):
+    textbutton [Texte] action Call("guessed", 1) xalign x yalign y
+
+screen button_guess_suspect_2(Texte, x, y):
+    textbutton [Texte] action Call("guessed", 2) xalign x yalign y
+
+screen button_guess_suspect_3(Texte, x, y):
+    textbutton [Texte] action Call("guessed", 3) xalign x yalign y
+
+screen button_guess_suspect_4(Texte, x, y):
+    textbutton [Texte] action Call("guessed", 4) xalign x yalign y
+
+
+# scene where the player tries to guess the culprit
 label guess_culprit:
 
     scene office
@@ -137,9 +154,23 @@ label guess_culprit:
     python:
         for suspect in suspects:
             renpy.say(boss, suspect.getName()+"?")
-        #textbutton str(suspect) action [SetVariable("chosen_suspect", str(suspect))] xalign 0.5 yalign 0.5
+            renpy.show_screen("button_guess_suspect_" + str(suspect.id), suspect.getName(), 0.1 + 0.2*suspect.id, 0.5)
 
-    boss "J'arrive pas à faire des boutons avec leurs noms :("
-    boss "adios"
+    boss "You should click on the name of the person you think is the killer."
+
+    return
+
+label guessed(suspect_id):
+    hide screen button_guess_suspect_0
+    hide screen button_guess_suspect_1
+    hide screen button_guess_suspect_2
+    hide screen button_guess_suspect_3
+    hide screen button_guess_suspect_4
+
+    python:
+        if suspect_id == persistent.killer_id:
+            "You guessed it right!"
+        else:
+            "You guessed it wrong!"
 
     return
