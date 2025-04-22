@@ -108,6 +108,7 @@ label give_hints:
 
 # Allows selection of the next person that will be interrogated.
 label choose_dialogue:
+    hide screen button_return_to_choose_dialogue
     scene bg police 2
     
     python:
@@ -171,6 +172,14 @@ screen button_ask_hints:
         xalign 0.7 yalign 0.7
         textbutton "Ask for hints" action Jump("give_hints")
 
+
+screen button_return_to_choose_dialogue:
+    frame:
+        background "#444444"
+        padding (10, 10)
+        xalign 0.9 yalign 0.1
+        textbutton "Return to choose dialogue" action Jump("choose_dialogue")
+
 label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_0
     hide screen button_interrogate_suspect_1
@@ -179,6 +188,11 @@ label interrogate_suspect(suspect_id):
     hide screen button_interrogate_suspect_4
     hide screen button_guess_culprit
     hide screen button_ask_hints
+
+    python:
+        suspect = persistent.suspect_manager.get_suspect_by_id(suspect_id)
+        renpy.show(suspect.getPicture("normal"), at_list=[Position(xalign=0.5, yalign=1.0)])
+        renpy.show_screen("button_return_to_choose_dialogue")
     
     ## faut poser la question au bon suspect
     while True:
