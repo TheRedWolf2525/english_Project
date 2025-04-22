@@ -36,7 +36,7 @@ label start:
     $ persistent.player_name = renpy.input("Please enter your name:") or "Lestrade"
 
     # affiche
-    scene bg office
+    scene office
     show boss serious
 
     boss "Hello, Officer [persistent.player_name]."
@@ -49,7 +49,7 @@ label start:
     boss "That will be your first case to solve."
     boss "Are you ready?"
 
-    scene bg police 1 
+    scene office
     show boss serious
     with fade
 
@@ -91,7 +91,7 @@ label give_hints:
     hide screen button_interrogate_suspect_4
     hide screen button_guess_culprit
     hide screen button_ask_hints
-    scene bg police 1 
+    scene office
     show boss serious
 
     boss "We just recived a list of clues from the crime scene."
@@ -109,7 +109,7 @@ label give_hints:
 # Allows selection of the next person that will be interrogated.
 label choose_dialogue:
     hide screen button_return_to_choose_dialogue
-    scene bg police 2
+    scene bg_interrogation_room
     
     python:
         for suspect_id in range(number_of_suspects):
