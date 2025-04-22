@@ -84,6 +84,16 @@ label start:
     return
 
 label give_hints:
+    hide screen button_interrogate_suspect_0
+    hide screen button_interrogate_suspect_1
+    hide screen button_interrogate_suspect_2
+    hide screen button_interrogate_suspect_3
+    hide screen button_interrogate_suspect_4
+    hide screen button_guess_culprit
+    hide screen button_ask_hints
+    scene bg police 1 
+    show boss serious
+
     boss "We just recived a list of clues from the crime scene."
     boss "Sadly, as always, it seems that writing a good report is too much to ask..."
     boss "Here is all I've got :"
@@ -174,9 +184,9 @@ label interrogate_suspect(suspect_id):
     while True:
         $ question = renpy.input("Write here:") or ""
         $ persistent.suspect_manager.get_suspect_by_id(suspect_id).add_entry(question)
-        $ answer = request_from_gemini("Maggie Mag", persistent.suspect_manager.get_suspect_by_id(suspect_id).coop, ["you were at home last night"], question, persistent.suspect_manager.get_suspect_by_id(suspect_id).exchanges)
+        $ answer = request_from_gemini(persistent.suspect_manager.get_suspect_by_id(suspect_id).getName(), persistent.suspect_manager.get_suspect_by_id(suspect_id).coop, persistent.suspect_manager.get_suspect_by_id(suspect_id).get_attributes(), question, persistent.suspect_manager.get_suspect_by_id(suspect_id).exchanges)
         $ persistent.suspect_manager.get_suspect_by_id(suspect_id).add_entry(answer)
-        "Maggie: [answer]"
+        "[persistent.suspect_manager.get_suspect_by_id(suspect_id).getName()]: [answer]"
 
 
 screen button_guess_suspect_0(Texte, x, y):

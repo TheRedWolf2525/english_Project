@@ -168,6 +168,10 @@ class Suspect:
             "frequent_location": self.frequent_location,
             "alibi": self.alibi,
         }
+    
+    def get_full_profiles(self):
+        return [self.get_attributes()]
+
 
 
 class SuspectManager:
