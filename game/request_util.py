@@ -1,7 +1,7 @@
 import json
 import urllib.request
 
-def request_from_gemini(name, coop_prompt, facts, question):
+def request_from_gemini(name, coop_prompt, facts, question, exchanges):
     url = "http://127.0.0.1:5000/ask"
     headers = {"Content-Type": "application/json"}
 
@@ -9,6 +9,7 @@ def request_from_gemini(name, coop_prompt, facts, question):
         "name": name,
         "coop_prompt": coop_prompt,
         "facts": facts,
+        "exchanges": exchanges,
         "question": question
     }
 

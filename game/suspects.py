@@ -198,6 +198,9 @@ class Suspect:
         self.motive = motive
         self.picture_label = picture_label
 
+        self.coop = random.randint(0, 1)
+        self.exchanges = [""]*5
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} (Alibi: {self.alibi}, Motive: {self.motive})"
 
@@ -206,6 +209,10 @@ class Suspect:
 
     def getPicture(self, expression):
         return f"{self.picture_label} {expression}"
+    
+    def add_entry(self, newEntry):
+        self.exchanges.pop(0)
+        self.exchanges.append(newEntry)
 
 class SuspectManager:
     def __init__(self):
@@ -280,3 +287,8 @@ class SuspectManager:
 
     def get_suspects(self):
         return self.suspects
+    
+    def get_suspect_by_id(self, id):
+        for s in self.suspects:
+            if s.id == id:
+                return s

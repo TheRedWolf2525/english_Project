@@ -9,7 +9,7 @@ with open("API_KEY.txt") as f:
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel("gemini-2.0-flash")
 
-def requester(name, coopLvl, facts, question, ):
+def requester(name, coopLvl, facts, question, exchange):
     #copoLvl imdique le niveau de coopération du suspect : 0 = Meurtrier -> 2 = Très coopératif
     if (coopLvl == 0):
         coopromt = "You are not very cooperative, and will distribute clues only if explicitely asked. "
@@ -21,7 +21,7 @@ def requester(name, coopLvl, facts, question, ):
     f"You should always deny being the muurderer. "
     f"You should reply only if you are spoken to in correct english. Else feign incomprehension. "
     f"You hold the following facts: {facts}. You must act accordingly. "
-    f"Here are your last two exchanges (empty at the beginning): "
+    f"Here are your last exchanges (empty at the beginning): {exchange}"
     f"Never volunteer information — only respond based on what you're asked. "
     f"The policeman says: {question}" )
 
@@ -37,10 +37,11 @@ def ask():
     name = data.get("name", "Unknown")
     coop_prompt = data.get("coop_prompt", "")
     facts = data.get("facts", [])
+    exchanges = data.get("exchanges", [])
     question = data.get("question", "")
 
     try:
-        response = requester(name, coop_prompt, facts, question)
+        response = requester(name, coop_prompt, facts, question, exchanges)
         return jsonify({"response": response.text})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

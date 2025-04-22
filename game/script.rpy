@@ -88,7 +88,9 @@ label interrogate_suspect(suspect_id):
     ## faut poser la question au bon suspect
     while True:
         $ question = renpy.input("Write here:") or ""
-        $ answer = request_from_gemini("Maggie Mag", 0, ["you were at home last night"], question)
+        $ persistent.suspect_manager.get_suspect_by_id(suspect_id).add_entry(question)
+        $ answer = request_from_gemini("Maggie Mag", persistent.suspect_manager.get_suspect_by_id(suspect_id).coop, ["you were at home last night"], question, persistent.suspect_manager.get_suspect_by_id(suspect_id).exchanges)
+        $ persistent.suspect_manager.get_suspect_by_id(suspect_id).add_entry(answer)
         "Maggie: [answer]"
 
 
