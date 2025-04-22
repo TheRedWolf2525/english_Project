@@ -14,6 +14,7 @@ define number_of_suspects = 5
 # être ré-écrites plus tard.
 default persistent.player_name = None
 default persistent.suspect_manager = None
+default persistent.killer_id = None
 
 init python:
     from suspects import SuspectManager
@@ -25,7 +26,9 @@ init python:
 label start:
 
     # logique métier à exécuter à chaque nouvelle partie
-    $ persistent.suspect_manager.generate_suspects(number_of_suspects)
+    $ persistent.killer_id = persistent.suspect_manager.generate_valid_suspects()
+    #$ persistent.suspect_manager.generate_suspects(number_of_suspects)
+    #"[persistent.suspect_manager.get_suspect_by_id(persistent.killer_id)]"
 
     # Text 
     "Welcome to the game."
@@ -35,8 +38,8 @@ label start:
     scene bg office
     show boss serious
 
-    boss "Hello, Agent [persistent.player_name]."
-    boss "There was a murder in a school. Mr Koro, a teacher that worked there, was found dead."
+    boss "Hello, Officer [persistent.player_name]."
+    boss "A murder occured in a nearby school. Mr Koro, a teacher that worked there, was found dead."
 
     # show image du mort
 

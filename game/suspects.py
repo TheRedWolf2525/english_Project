@@ -1,4 +1,5 @@
 import random
+from itertools import combinations
 # Assign genders and split first names accordingly
 GENDERS = ["Male", "Female"]
 
@@ -41,14 +42,6 @@ LAST_NAMES = [
 ]
 AGES = list(range(18, 30))
 YEARS = ["1st year", "2nd year", "3rd year", "Master", "PhD"]
-SPECIALIZATIONS = [
-    "Cybersecurity",
-    "AI",
-    "Development",
-    "Networks",
-    "Data Science",
-    "Embedded Systems",
-]
 PERSONALITIES = [
     "Introvert",
     "Extravert",
@@ -76,38 +69,9 @@ FAVORITE_SUBJECTS = [
     "Algorithms",
     "Cryptography",
 ]
-FAVORITE_LANGUAGES = [
-    "Python",
-    "C++",
-    "Java",
-    "Rust",
-    "Go",
-    "JavaScript",
-    "Swift",
-    "Haskell",
-]
-FAVORITE_EDITORS = [
-    "VS Code",
-    "IntelliJ",
-    "Vim",
-    "Emacs",
-    "Sublime Text",
-    "Eclipse",
-    "Atom",
-]
 DEVICES = ["Windows PC", "MacBook", "Linux ThinkPad", "Custom-built PC", "iPad Pro"]
 FAVORITE_FOODS = ["Pizza", "Ramen", "Burger", "Sushi", "Tacos", "Pasta", "Salad"]
 FAVORITE_DRINKS = ["Coffee", "Energy Drink", "Tea", "Soda", "Juice", "Milkshake"]
-FAVORITE_MUSIC = ["Rock", "Rap", "Electronic", "Jazz", "Classical", "Pop", "Metal"]
-FAVORITE_GAMES = [
-    "LoL",
-    "CS:GO",
-    "Minecraft",
-    "Dark Souls",
-    "Valorant",
-    "The Witcher",
-    "Elden Ring",
-]
 FAVORITE_ACTIVITIES = [
     "Sports",
     "Drawing",
@@ -126,23 +90,12 @@ FREQUENT_LOCATIONS = [
     "Dormitory",
     "Lecture Hall",
 ]
-SLEEP_CYCLES = ["Early Bird", "Night Owl", "Insomniac", "Sleeps Anytime"]
 ALIBIS = [
     "Was at home",
     "Was at work",
     "Was with friends",
     "Has no alibi",
     "Was in a meeting",
-]
-MOTIVES = [
-    "Revenge",
-    "Got a bad grade",
-    "Jealousy",
-    "Greed",
-    "Self-defense",
-    "Blackmail",
-    "Accidental",
-    "Framed",
 ]
 
 
@@ -155,23 +108,16 @@ class Suspect:
         last_name,
         age,
         year,
-        specialization,
         personality,
         club,
         favorite_subject,
-        favorite_language,
-        favorite_editor,
         device,
         favorite_food,
         favorite_drink,
-        favorite_music,
-        favorite_game,
         favorite_activity,
         social_media,
         frequent_location,
-        sleep_cycle,
         alibi,
-        motive,
         picture_label,
     ):
         self.id = id
@@ -179,30 +125,23 @@ class Suspect:
         self.last_name = last_name
         self.age = age
         self.year = year
-        self.specialization = specialization
         self.personality = personality
         self.club = club
         self.favorite_subject = favorite_subject
-        self.favorite_language = favorite_language
-        self.favorite_editor = favorite_editor
         self.device = device
         self.favorite_food = favorite_food
         self.favorite_drink = favorite_drink
-        self.favorite_music = favorite_music
-        self.favorite_game = favorite_game
         self.favorite_activity = favorite_activity
         self.social_media = social_media
         self.frequent_location = frequent_location
-        self.sleep_cycle = sleep_cycle
         self.alibi = alibi
-        self.motive = motive
         self.picture_label = picture_label
 
         self.coop = random.randint(0, 1)
         self.exchanges = [""]*5
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} (Alibi: {self.alibi}, Motive: {self.motive})"
+        return f"{self.first_name} {self.last_name} (Alibi: {self.alibi})"
 
     def getName(self):
         return f"{self.first_name} {self.last_name}"
@@ -213,6 +152,23 @@ class Suspect:
     def add_entry(self, newEntry):
         self.exchanges.pop(0)
         self.exchanges.append(newEntry)
+    
+    def get_attributes(self):
+        return {
+            "age": self.age,
+            "year": self.year,
+            "personality": self.personality,
+            "club": self.club,
+            "favorite_subject": self.favorite_subject,
+            "device": self.device,
+            "favorite_food": self.favorite_food,
+            "favorite_drink": self.favorite_drink,
+            "favorite_activity": self.favorite_activity,
+            "social_media": self.social_media,
+            "frequent_location": self.frequent_location,
+            "alibi": self.alibi,
+        }
+
 
 class SuspectManager:
     def __init__(self):
@@ -263,23 +219,16 @@ class SuspectManager:
                 last_name=last_name,
                 age=random.choice(AGES),
                 year=random.choice(YEARS),
-                specialization=random.choice(SPECIALIZATIONS),
                 personality=random.choice(PERSONALITIES),
                 club=random.choice(CLUBS),
                 favorite_subject=random.choice(FAVORITE_SUBJECTS),
-                favorite_language=random.choice(FAVORITE_LANGUAGES),
-                favorite_editor=random.choice(FAVORITE_EDITORS),
                 device=random.choice(DEVICES),
                 favorite_food=random.choice(FAVORITE_FOODS),
                 favorite_drink=random.choice(FAVORITE_DRINKS),
-                favorite_music=random.choice(FAVORITE_MUSIC),
-                favorite_game=random.choice(FAVORITE_GAMES),
                 favorite_activity=random.choice(FAVORITE_ACTIVITIES),
                 social_media=random.choice(SOCIAL_MEDIA),
                 frequent_location=random.choice(FREQUENT_LOCATIONS),
-                sleep_cycle=random.choice(SLEEP_CYCLES),
                 alibi=random.choice(ALIBIS),
-                motive=random.choice(MOTIVES),
                 picture_label=picture_label,
             
             )
@@ -292,3 +241,40 @@ class SuspectManager:
         for s in self.suspects:
             if s.id == id:
                 return s
+
+    def validate_unique_murderer(self, murderer_id, indices_count=6):
+        murderer = self.get_suspect_by_id(murderer_id)
+        murderer_attrs = murderer.get_attributes()
+
+        all_keys = list(murderer_attrs.keys())
+        combos = list(combinations(all_keys, indices_count))
+
+        for combo in combos:
+            murderer_signature = tuple(murderer_attrs[k] for k in combo)
+
+            match_count = 0
+            for suspect in self.suspects:
+                suspect_attrs = suspect.get_attributes()
+                signature = tuple(suspect_attrs[k] for k in combo)
+                if signature == murderer_signature:
+                    match_count += 1
+                if match_count > 1:
+                    return False  # Une autre personne partage cette combinaison
+
+        return True
+    
+    def generate_valid_suspects(self, count=5, max_attempts=1000):
+        attempts = 0
+        while attempts < max_attempts:
+            self.suspects = []
+            self.generate_suspects(count)
+
+            for i in range(count):
+                if self.validate_unique_murderer(murderer_id=i):
+                    print(f"Suspect {i} can be a valid murderer.")
+                    return i  # On retourne l'ID du coupable choisi
+
+            attempts += 1
+
+        raise Exception("Impossible de générer des suspects valides après plusieurs tentatives.")
+

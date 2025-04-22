@@ -19,7 +19,7 @@ def requester(name, coopLvl, facts, question, exchange):
     promtp = (
     f"Your name is {name}. You are being interrogated in connection with the murder of your teacher Mr. Koro. {coopromt}"
     f"You should always deny being the muurderer. "
-    f"You should reply only if you are spoken to in correct english. Else feign incomprehension. "
+    f"You should reply only if you are spoken to in correct english. Else feign incomprehension. All your answers must be in english. "
     f"You hold the following facts: {facts}. You must act accordingly. "
     f"Here are your last exchanges (empty at the beginning): {exchange}"
     f"Never volunteer information — only respond based on what you're asked. "
