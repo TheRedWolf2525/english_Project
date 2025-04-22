@@ -37,7 +37,7 @@ label start:
 
     # affiche
     scene office
-    show boss serious
+    show boss
 
     boss "Hello, Officer [persistent.player_name]."
     boss "A murder occured in a nearby school. Mr Koro, a teacher that worked there, was found dead."
@@ -50,7 +50,7 @@ label start:
     boss "Are you ready?"
 
     scene office
-    show boss serious
+    show boss
     with fade
 
     boss "We just recived a list of clues from the crime scene."
@@ -63,7 +63,7 @@ label start:
             renpy.say(boss, key+" : "+str(val))
 
     boss "We managed to capture all [number_of_suspects] suspects. Here they are:"
-    show boss serious at left
+    show boss at left
 
     python:
         for suspect in persistent.suspect_manager.get_suspects():
@@ -71,7 +71,7 @@ label start:
             renpy.say(boss, str(suspect))
             renpy.hide(suspect.getPicture("normal"))     
 
-    show boss serious at center 
+    show boss at center 
     boss "You have to find out who killed Mr Koro."
 
     jump choose_dialogue
@@ -92,7 +92,7 @@ label give_hints:
     hide screen button_guess_culprit
     hide screen button_ask_hints
     scene office
-    show boss serious
+    show boss
 
     boss "We just recived a list of clues from the crime scene."
     boss "Sadly, as always, it seems that writing a good report is too much to ask..."
@@ -252,7 +252,7 @@ label guess_culprit:
 
 
     scene office
-    show boss serious
+    show boss
     with fade
 
     boss "So, [persistent.player_name], you think you have enough data to 
